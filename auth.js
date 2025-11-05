@@ -1,5 +1,3 @@
-// auth.js — versi JSONP untuk komunikasi dengan GAS tanpa CORS
-
 const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbxrWR_zLb5Uw256bgzXZm9oA8Mw3lhyOJRtPq_ZP9z7El6fb-OoDkgrMBvV_E4F0FpI/exec";
 
 function apiGet(action, params = {}) {

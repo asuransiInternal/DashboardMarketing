@@ -1,34 +1,25 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="id">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Dashboard - Dashboard Marketing</title>
-    <script src="assets/js/config.js"></script>
-  <script src="assets/js/auth.js"></script>
-  <script src="assets/js/dashboard.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Marketing</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body onload="checkSessionAndRender()">
-  <div class="sidebar-mini">
-    <h4>Menu</h4>
-    <div id="menuList" class="menu-list" style="margin-top:12px"></div>
-    <div style="margin-top:18px"><button class="btn" onclick="logout()">Logout</button></div>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="main-content">
+      <header>
+        <h2 id="pageTitle">Beranda</h2>
+        <span id="greeting"></span>
+      </header>
+      <section id="contentArea">
+        <h3>Selamat datang di Dashboard Marketing!</h3>
+      </section>
+    </main>
   </div>
 
-  <div class="main-area">
-    <div class="header-row">
-      <div><h2 id="pageTitle">Dashboard</h2></div>
-      <div class="greeting">
-        <div class="avatar">👤</div>
-        <div id="greetingText">Memuat...</div>
-      </div>
-    </div>
-
-    <div id="contentArea">
-      <p>Template dashboard (role-based). Klik menu di kiri untuk membuka halaman sesuai akses.</p>
-    </div>
-  </div>
-
-  <div class="toast-wrap"></div>
+  <script src="auth.js"></script>
 </body>
 </html>

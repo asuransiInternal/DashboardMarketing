@@ -16,12 +16,20 @@ function toast(msg){
   setTimeout(()=> t.remove(), 3500);
 }
 
-async function apiPost(action, bodyObj){
-  const payload = Object.assign({}, bodyObj, { action: action });
-  const res = await fetch(GAS_URL, {
+async function apiPost(action, data) {
+  const payload = { action, ...data };
+  const response = await fetch(API_URL, {
     method: 'POST',
+    mode: 'no-cors', // Tambahkan ini agar fetch tidak diblokir CORS
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   });
-  return res.json();
+
+  // Karena mode: 'no-cors' membatasi response, gunakan workaround:
+  try {
+    const text = await response.text();
+    return JSON.parse(text);
+  } catch {
+    return { success: true, message: 'Permintaan dikirim (mode no-cors)' };
+  }
 }

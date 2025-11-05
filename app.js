@@ -1,5 +1,5 @@
 // --- Konfigurasi Global Frontend ---
-const GAS_WEB_APP_URL = 'URL_DEPLOYMENT_GAS_ANDA'; // Ganti dengan URL Web App GAS Anda
+const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzj6Iq9zpbmUW5LpD90wezmfHTD5wJnyzNB01XSdjMa9wJvHPhAeEQhwY3HoGOC86br/exec'; // Ganti dengan URL Web App GAS Anda
 // Contoh: https://script.google.com/macros/s/AKfycbz_YOUR_DEPLOYMENT_ID_HERE/exec
 
 // --- Fungsi Helper untuk Feedback UI ---

@@ -68,7 +68,7 @@
       if(password.length < 6){ msgEl.innerText = 'Password minimal 6 karakter'; msgEl.style.color='#c53030'; return; }
 
       const clientHash = await sha256hex(password);
-      const res = await apiPost('signup', { nama_lengkap: nama, email: email, client_hash: clientHash, no_whatsapp: wa });
+      const res = await apiGet('signup', { nama_lengkap: nama, email: email, client_hash: clientHash, no_whatsapp: wa });
       if(res.status === 'ok'){
         msgEl.innerText = res.message || 'Permintaan pendaftaran diterima, menunggu approval Admin';
         msgEl.style.color = '#15803d';

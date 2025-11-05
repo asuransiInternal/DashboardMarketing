@@ -33,3 +33,19 @@ async function apiPost(action, data) {
     return { success: true, message: 'Permintaan dikirim (mode no-cors)' };
   }
 }
+
+function apiGet(action, params = {}) {
+  return new Promise((resolve, reject) => {
+    const callbackName = "cb" + Date.now();
+    window[callbackName] = function(data) {
+      resolve(data);
+      delete window[callbackName];
+    };
+
+    const query = new URLSearchParams({ ...params, action, callback: callbackName }).toString();
+    const script = document.createElement("script");
+    script.src = `${API_URL}?${query}`;
+    script.onerror = reject;
+    document.body.appendChild(script);
+  });
+}

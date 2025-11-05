@@ -1,33 +1,56 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Dashboard Marketing</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Dashboard Marketing</title>
+    <link rel="stylesheet" href="Administrasi/style.css"> <!-- Pastikan path benar -->
 </head>
 <body>
-  <div class="container">
-    <div class="left-side">
-      <img src="bg.jpg" alt="Background" class="bg-img">
-      <div class="overlay-text">
-        <h1>Monitoring Marketing Menjadi Mudah</h1>
-        <p>Monitoring bisnis marketing secara real-time dengan data yang akurat dan terpusat.</p>
-      </div>
-    </div>
-    <div class="right-side">
-      <h2>Selamat Datang!</h2>
-      <input type="email" id="email" placeholder="Email Gmail" required>
-      <div class="password-wrapper">
-        <input type="password" id="password" placeholder="Password" required>
-        <span class="toggle-password" onclick="togglePassword()">👁️</span>
-      </div>
-      <button id="btnLogin" onclick="doLogin()">Login</button>
-      <p><a href="forgot-password.html">Lupa Password?</a></p>
-      <p>Belum punya akun? <a href="signup.html">Daftar Sekarang</a></p>
-    </div>
-  </div>
+    <div class="login-container">
+        <div class="login-left">
+            <div class="overlay"></div>
+            <img src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Building Background">
+            <div class="text-content">
+                <span class="dashboard-text">Dashboard Marketing</span>
+                <h1>Monitoring Marketing Menjadi Mudah</h1>
+                <p>Monitoring bisnis Marketing secara real-time dengan data yang akurat dan terpusat.</p>
+            </div>
+        </div>
+        <div class="login-right">
+            <h2>Selamat Datang!</h2>
+            <p>Silakan masuk untuk melanjutkan.</p>
 
-  <script src="auth.js"></script>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="herman.him56@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="•••••••••" required>
+                    <a href="forgot_password.html" class="forgot-password">Lupa Password?</a>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" id="loginButton">MASUK</button>
+                <div id="loginError" class="error-message"></div> <!-- Untuk pesan error -->
+                
+                <div class="divider">
+                    <span>atau</span>
+                </div>
+                
+                <button type="button" class="btn btn-google">
+                    <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="Google icon"> Masuk dengan Google
+                </button>
+            </form>
+
+            <p class="signup-link">Belum punya akun? <a href="signup.html">Daftar Sekarang</a></p>
+        </div>
+    </div>
+
+    <!-- Elemen untuk Toast Message -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="app.js"></script> <!-- Script utama untuk AJAX dan fungsionalitas -->
 </body>
 </html>

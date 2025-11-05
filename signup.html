@@ -1,86 +1,125 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="id">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Daftar - Dashboard Marketing</title>
-  <link rel="stylesheet" href="assets/css/style.css"/>
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/auth.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daftar | Dashboard Marketing</title>
+  <link rel="stylesheet" href="style.css" />
   <script src="auth.js"></script>
-</head>
-<body>
-  <div class="container">
-    <div class="left">
-      <div class="bg" id="leftBg">
-        <div class="overlay"></div>
-        <div class="hero">
-          <div style="font-size:13px; opacity:0.9; margin-bottom:18px;">Dashboard Marketing</div>
-          <h1>Monitoring<br/>Marketing Menjadi Mudah</h1>
-          <p style="margin-top:18px; font-size:15px; max-width:420px;">
-            Monitoring bisnis Marketing secara real-time dengan data yang akurat dan terpusat.
-          </p>
-        </div>
-      </div>
-    </div>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-    <div class="right">
-      <h2 style="margin:0 0 8px">Buat Akun Baru</h2>
-      <p class="small" style="margin-top:0;margin-bottom:18px;">Isi data di bawah ini untuk mendaftar.</p>
+    .left-side {
+      flex: 1;
+      background: url('https://github.com/asuransiInternal/DashboardMarketing/blob/main/file_000000006878722fb57ff4d6cf3e6877.png?raw=true') center/cover no-repeat;
+      display: none;
+    }
 
-      <div class="form-group">
-        <label>Nama Lengkap</label>
-        <input id="nama" class="input" />
-      </div>
-      <div class="form-group">
-        <label>Email (Wajib Gmail)</label>
-        <input id="email" type="email" class="input" placeholder="contoh: namaanda@gmail.com" />
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input id="password" type="password" class="input" placeholder="Buat password yang kuat" />
-      </div>
-      <div class="form-group">
-        <label>No. WhatsApp</label>
-        <input id="wa" class="input" placeholder="Contoh: 081234567890" />
-      </div>
+    .right-side {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 2rem;
+    }
 
-      <button class="btn" id="btnSignup">DAFTAR</button>
+    .signup-card {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      animation: fadeInUp 0.6s ease;
+    }
 
-      <div id="signupMsg" class="signup-msg small" style="color:#6b7280"></div>
-      <div style="margin-top:18px; text-align:center" class="small">Sudah punya akun? <a href="index.html">Masuk di sini</a></div>
-    </div>
-  </div>
+    .signup-card h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
 
-  <div class="toast-wrap"></div>
+    .form-group {
+      margin-bottom: 1rem;
+    }
 
-  <script>
-    document.getElementById('leftBg').style.backgroundImage = "url('https://raw.githubusercontent.com/asuransiInternal/DashboardMarketing/main/file_000000006878722fb57ff4d6cf3e6877.png')";
+    label {
+      font-weight: 500;
+      color: #444;
+      font-size: 0.9rem;
+    }
 
-    async function doSignup(){
-      const nama = (document.getElementById('nama').value||'').trim();
-      const email = (document.getElementById('email').value||'').trim();
-      const password = (document.getElementById('password').value||'').trim();
-      const wa = (document.getElementById('wa').value||'').trim();
-      const msgEl = document.getElementById('signupMsg');
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
 
-      if(!nama || !email || !password){ msgEl.innerText = 'Lengkapi semua isian'; msgEl.style.color='#c53030'; return; }
-      if(!email.endsWith('@gmail.com')){ msgEl.innerText = 'Gunakan alamat Gmail'; msgEl.style.color='#c53030'; return; }
-      if(password.length < 6){ msgEl.innerText = 'Password minimal 6 karakter'; msgEl.style.color='#c53030'; return; }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #0077cc;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
 
-      const clientHash = await sha256hex(password);
-      const res = await apiGet('signup', { nama_lengkap: nama, email: email, client_hash: clientHash, no_whatsapp: wa });
-      if(res.status === 'ok'){
-        msgEl.innerText = res.message || 'Permintaan pendaftaran diterima, menunggu approval Admin';
-        msgEl.style.color = '#15803d';
-        toast('Pendaftaran terkirim');
-      } else {
-        msgEl.innerText = res.message || 'Gagal mendaftar';
-        msgEl.style.color = '#c53030';
+    button.loading {
+      background: #004d80;
+      pointer-events: none;
+    }
+
+    button.loading::after {
+      content: " ⏳ Proses...";
+    }
+
+    button:hover:not(.loading) {
+      background: #005fa3;
+    }
+
+    p {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    p a {
+      color: #0077cc;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    @media (min-width: 900px) {
+      .left-side {
+        display: block;
+      }
+      .right-side {
+        flex: 0.6;
       }
     }
 
-    document.getElementById('btnSignup').addEventListener('click', doSignup);
-  </script>
-</body>
-</html>
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="left-side"></div>
+  <div class="right-side">
+    <div class="signup-card">
+      <h2>Daftar Akun Baru</h2>
+      <div class="f

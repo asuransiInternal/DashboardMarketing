@@ -1,68 +1,85 @@
-<!-- signup.html -->
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-  <script src="assets/config.js"></script>
-  <base target="_top">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Signup</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>body{background:#f5f7fb}.card{border-radius:12px}</style>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Daftar - Dashboard Marketing</title>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/auth.js"></script>
 </head>
-<body class="d-flex align-items-center justify-content-center vh-100">
-  <div class="card p-4" style="width:420px;">
-    <h4 class="mb-3 text-center">Daftar Akun Baru</h4>
-    <div class="mb-2">
-      <label class="form-label">Nama Lengkap</label>
-      <input id="nama" class="form-control" />
+<body>
+  <div class="container">
+    <div class="left">
+      <div class="bg" id="leftBg">
+        <div class="overlay"></div>
+        <div class="hero">
+          <div style="font-size:13px; opacity:0.9; margin-bottom:18px;">Dashboard Marketing</div>
+          <h1>Monitoring<br/>Marketing Menjadi Mudah</h1>
+          <p style="margin-top:18px; font-size:15px; max-width:420px;">
+            Monitoring bisnis Marketing secara real-time dengan data yang akurat dan terpusat.
+          </p>
+        </div>
+      </div>
     </div>
-    <div class="mb-2">
-      <label class="form-label">Email (Gmail)</label>
-      <input id="email" type="email" class="form-control" />
-    </div>
-    <div class="mb-2 position-relative">
-      <label class="form-label">Password</label>
-      <input id="password" type="password" class="form-control" />
-      <span style="position:absolute; right:12px; top:38px; cursor:pointer" onclick="toggleP()">👁️</span>
-    </div>
-    <div class="mb-3">
-      <label class="form-label">No WhatsApp</label>
-      <input id="wa" class="form-control" />
-    </div>
-    <div class="mb-3">
-      <span id="signupMsg" class="small text-muted"></span>
-    </div>
-    <button class="btn btn-primary w-100" onclick="doSignup()">Daftar</button>
-    <div class="mt-3 text-center small">
-      Sudah punya akun? <a href="?page=index">Login</a>
+
+    <div class="right">
+      <h2 style="margin:0 0 8px">Buat Akun Baru</h2>
+      <p class="small" style="margin-top:0;margin-bottom:18px;">Isi data di bawah ini untuk mendaftar.</p>
+
+      <div class="form-group">
+        <label>Nama Lengkap</label>
+        <input id="nama" class="input" />
+      </div>
+      <div class="form-group">
+        <label>Email (Wajib Gmail)</label>
+        <input id="email" type="email" class="input" placeholder="contoh: namaanda@gmail.com" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input id="password" type="password" class="input" placeholder="Buat password yang kuat" />
+      </div>
+      <div class="form-group">
+        <label>No. WhatsApp</label>
+        <input id="wa" class="input" placeholder="Contoh: 081234567890" />
+      </div>
+
+      <button class="btn" id="btnSignup">DAFTAR</button>
+
+      <div id="signupMsg" class="signup-msg small" style="color:#6b7280"></div>
+      <div style="margin-top:18px; text-align:center" class="small">Sudah punya akun? <a href="index.html">Masuk di sini</a></div>
     </div>
   </div>
 
-<script>
-  function toggleP(){const p=document.getElementById('password'); p.type = p.type === 'password' ? 'text' : 'password';}
-  function showMsg(text, error){
-    const el = document.getElementById('signupMsg');
-    el.innerText = text;
-    el.style.color = error ? 'crimson' : 'green';
-  }
+  <div class="toast-wrap"></div>
 
-  function doSignup(){
-    const nama = document.getElementById('nama').value;
-    const email = (document.getElementById('email').value||'').trim();
-    const password = document.getElementById('password').value;
-    const wa = document.getElementById('wa').value;
-    if(!nama || !email || !password){ showMsg('Lengkapi semua isian', true); return; }
-    // client-side basic email check for gmail
-    if(!email.endsWith('@gmail.com')){ showMsg('Gunakan alamat Gmail', true); return; }
-    google.script.run.withSuccessHandler(function(resRaw){
-      const res = JSON.parse(resRaw);
-      if(res.status === 'ok') {
-        showMsg(res.message, false);
+  <script>
+    document.getElementById('leftBg').style.backgroundImage = "url('https://raw.githubusercontent.com/asuransiInternal/DashboardMarketing/main/file_000000006878722fb57ff4d6cf3e6877.png')";
+
+    async function doSignup(){
+      const nama = (document.getElementById('nama').value||'').trim();
+      const email = (document.getElementById('email').value||'').trim();
+      const password = (document.getElementById('password').value||'').trim();
+      const wa = (document.getElementById('wa').value||'').trim();
+      const msgEl = document.getElementById('signupMsg');
+
+      if(!nama || !email || !password){ msgEl.innerText = 'Lengkapi semua isian'; msgEl.style.color='#c53030'; return; }
+      if(!email.endsWith('@gmail.com')){ msgEl.innerText = 'Gunakan alamat Gmail'; msgEl.style.color='#c53030'; return; }
+      if(password.length < 6){ msgEl.innerText = 'Password minimal 6 karakter'; msgEl.style.color='#c53030'; return; }
+
+      const clientHash = await sha256hex(password);
+      const res = await apiPost('signup', { nama_lengkap: nama, email: email, client_hash: clientHash, no_whatsapp: wa });
+      if(res.status === 'ok'){
+        msgEl.innerText = res.message || 'Permintaan pendaftaran diterima, menunggu approval Admin';
+        msgEl.style.color = '#15803d';
+        toast('Pendaftaran terkirim');
       } else {
-        showMsg(res.message || 'Gagal mendaftar', true);
+        msgEl.innerText = res.message || 'Gagal mendaftar';
+        msgEl.style.color = '#c53030';
       }
-    }).signupUser({nama_lengkap: nama, email: email, password: password, no_whatsapp: wa});
-  }
-</script>
+    }
+
+    document.getElementById('btnSignup').addEventListener('click', doSignup);
+  </script>
 </body>
 </html>

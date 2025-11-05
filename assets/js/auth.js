@@ -1,5 +1,5 @@
 // assets/js/auth.js
-// helper for client-side sha256 and API calls
+const API_URL = "https://script.google.com/macros/s/AKfycbxrWR_zLb5Uw256bgzXZm9oA8Mw3lhyOJRtPq_ZP9z7El6fb-OoDkgrMBvV_E4F0FpI/exec";
 
 async function sha256hex(message){
   const msgUint8 = new TextEncoder().encode(message);
@@ -16,36 +16,19 @@ function toast(msg){
   setTimeout(()=> t.remove(), 3500);
 }
 
-async function apiPost(action, data) {
-  const payload = { action, ...data };
-  const response = await fetch(API_URL, {
-    method: 'POST',
-    mode: 'no-cors', // Tambahkan ini agar fetch tidak diblokir CORS
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  });
-
-  // Karena mode: 'no-cors' membatasi response, gunakan workaround:
-  try {
-    const text = await response.text();
-    return JSON.parse(text);
-  } catch {
-    return { success: true, message: 'Permintaan dikirim (mode no-cors)' };
-  }
-}
-
 function apiGet(action, params = {}) {
   return new Promise((resolve, reject) => {
-    const callbackName = "cb" + Date.now();
-    window[callbackName] = function(data) {
+    const callback = "cb" + Date.now();
+    window[callback] = function (data) {
       resolve(data);
-      delete window[callbackName];
+      delete window[callback];
     };
 
-    const query = new URLSearchParams({ ...params, action, callback: callbackName }).toString();
+    const query = new URLSearchParams({ ...params, action, callback }).toString();
     const script = document.createElement("script");
     script.src = `${API_URL}?${query}`;
-    script.onerror = reject;
+    script.onerror = () => reject("Gagal memuat API");
     document.body.appendChild(script);
   });
 }
+

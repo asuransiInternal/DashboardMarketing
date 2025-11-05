@@ -1,72 +1,89 @@
-<!-- index.html -->
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <head>
-    <script src="assets/config.js"></script>
-    <base target="_top">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Login - Dashboard Marketing</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-      body{background:#f5f7fb}
-      .card{border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.08)}
-      .toast-pos{position:fixed; right:16px; bottom:16px; z-index:9999}
-      .eye{cursor:pointer}
-    </style>
-  </head>
-  <body class="d-flex align-items-center justify-content-center vh-100">
-    <div class="card p-4" style="width:360px;">
-      <h4 class="mb-3 text-center">Masuk ke Dashboard</h4>
-      <div class="mb-2">
-        <label class="form-label">Email</label>
-        <input id="email" type="email" class="form-control" placeholder="nama@gmail.com" />
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Login - Dashboard Marketing</title>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/auth.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="left">
+      <div class="bg" id="leftBg">
+        <div class="overlay"></div>
+        <div class="hero">
+          <div style="font-size:13px; opacity:0.9; margin-bottom:18px;">Dashboard Marketing</div>
+          <h1>Monitoring<br/>Marketing Menjadi Mudah</h1>
+          <p style="margin-top:18px; font-size:15px; max-width:420px;">
+            Tracking aktifitas marketing, register aplikasi, pengiriman dan klaim — semua terpusat.
+          </p>
+        </div>
       </div>
-      <div class="mb-3 position-relative">
-        <label class="form-label">Password</label>
-        <input id="password" type="password" class="form-control" placeholder="Password" />
-        <span class="position-absolute top-50 end-0 translate-middle-y me-3 eye" onclick="togglePass()">👁️</span>
-      </div>
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <a href="?page=signup" class="small">Belum punya akun? Daftar</a>
-        <a href="?page=forgot-password" class="small">Lupa password?</a>
-      </div>
-      <button class="btn btn-primary w-100" onclick="doLogin()">Masuk</button>
     </div>
 
-    <div id="toast" class="toast-pos"></div>
+    <div class="right">
+      <h2 style="margin:0 0 8px">Selamat Datang!</h2>
+      <p class="small" style="margin-top:0;margin-bottom:18px;">Silakan masuk untuk melanjutkan.</p>
 
-    <script>
-      const GAS_URL = "https://script.google.com/macros/s/AKfycbx7I3X-LH_TPAYH2bF_jv6SdQq4CmBzdhe3s11WVcf3v-sl3hqWgDA6SuUjlJJFHvs9/exec";
-      function togglePass(){
-        const el = document.getElementById('password');
-        el.type = (el.type === 'password') ? 'text' : 'password';
-      }
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" class="input" type="email" placeholder="nama@gmail.com" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div style="position:relative">
+          <input id="password" class="input" type="password" placeholder="••••••••" />
+          <button id="eye" style="position:absolute; right:8px; top:8px; border:none; background:none; cursor:pointer">👁️</button>
+        </div>
+      </div>
 
-      function showToast(msg){
-        const div = document.createElement('div');
-        div.className = 'alert alert-success';
-        div.style.minWidth = '220px';
-        div.innerText = msg;
-        document.getElementById('toast').appendChild(div);
-        setTimeout(()=> div.remove(), 3500);
-      }
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <a class="small" href="signup.html">Belum punya akun? Daftar</a>
+        <a class="small" href="forgot-password.html">Lupa Password?</a>
+      </div>
 
-      function doLogin(){
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        if(!email || !password){ showToast('Masukkan email & password'); return; }
-        google.script.run.withSuccessHandler(function(resRaw){
-          const res = JSON.parse(resRaw);
-          if(res.status === 'ok'){
-            // redirect to dashboard with token
-            window.location.href = '?page=dashboard&token=' + encodeURIComponent(res.token);
-          } else {
-            showToast(res.message || 'Gagal login');
-          }
-        }).loginUser({email: email, password: password});
+      <button class="btn" id="btnLogin">MASUK</button>
+
+      <div id="error" class="signup-msg" style="color:#c53030"></div>
+
+      <div style="margin-top:16px; text-align:center; color:#9aa0b4">atau</div>
+      <div style="margin-top:12px; display:flex; gap:8px">
+        <button class="input" style="display:flex; align-items:center; justify-content:center; gap:8px;">Masuk dengan Google</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap"></div>
+
+  <script>
+    // background image
+    document.getElementById('leftBg').style.backgroundImage = "url('https://raw.githubusercontent.com/asuransiInternal/DashboardMarketing/main/file_000000006878722fb57ff4d6cf3e6877.png')";
+
+    document.getElementById('eye').addEventListener('click', function(e){ e.preventDefault();
+      const p = document.getElementById('password'); p.type = (p.type==='password')?'text':'password';
+    });
+
+    document.getElementById('btnLogin').addEventListener('click', async function(){
+      const email = (document.getElementById('email').value||'').trim();
+      const password = (document.getElementById('password').value||'').trim();
+      document.getElementById('error').innerText = '';
+      if(!email || !password){ document.getElementById('error').innerText = 'Masukkan email & password'; return; }
+      if(!email.endsWith('@gmail.com')){ document.getElementById('error').innerText = 'Gunakan alamat Gmail'; return; }
+
+      const clientHash = await sha256hex(password); // client-side SHA-256
+      const res = await apiPost('login', { email: email, client_hash: clientHash });
+      if(res.status === 'ok'){
+        sessionStorage.setItem('dm_token', res.token);
+        sessionStorage.setItem('dm_role', res.role || '');
+        sessionStorage.setItem('dm_name', res.nama_lengkap || '');
+        toast('Login berhasil');
+        setTimeout(()=> { window.location.href = 'dashboard.html'; }, 800);
+      } else {
+        document.getElementById('error').innerText = res.message || 'Gagal login';
       }
-    </script>
-  </body>
+    });
+  </script>
+</body>
 </html>
-
-

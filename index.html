@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Manajemen Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="visual-side">
+            <div class="visual-content">
+                  <span class="logo-text">Dashboard Marketing</span>
+                <h2>Monitoring Marketing Menjadi Mudah</h2>
+                <p>Monitoring bisnis Marketing secara real-time dengan data yang akurat dan terpusat.</p>
+            </div>
+        </div>
+        <div class="form-side">
+            <div class="form-content">
+                <div class="form-header">
+                    <h2>Selamat Datang!</h2>
+                    <p>Silakan masuk untuk melanjutkan.</p>
+                </div>
+                <form name="login-form">
+                    <input type="hidden" name="action" value="login">
+                    <div class="input-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Masukkan alamat email Anda" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Masukkan password Anda" required>
+                    </div>
+                    <a href="forgot-password.html" class="forgot-password">Lupa Password?</a>
+                    <button type="submit" class="btn btn-primary">MASUK</button>
+                    <p id="error-message" style="color: red; text-align: center; margin-top: 15px; height: 20px;"></p>
+                    <div class="divider"><span>atau</span></div>
+                    <button type="button" class="btn btn-secondary"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google Logo"> Masuk dengan Google</button>
+                </form>
+                <div class="form-footer">
+                    <p>Belum punya akun? <a href="signup.html">Daftar Sekarang</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+        const form = document.forms['login-form'];
+        const loginButton = document.querySelector('button[type="submit"]');
+        const errorMessage = document.getElementById('error-message');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const webAppUrl = 'https://script.google.com/macros/s/AKfycbxZxym5UgUwJn4-OAMKSgVuoGmWQ0NlrrP8AFaLMbkH1h83mBxXzSxDUuA3k-lADymD/exec';
+            
+            loginButton.disabled = true;
+            loginButton.textContent = 'MEMPROSES...';
+            errorMessage.textContent = ''; 
+
+            const formData = new FormData(form);
+
+            fetch(webAppUrl, { method: 'POST', body: formData })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success' && data.user) {
+                    sessionStorage.setItem('loggedInUser', JSON.stringify(data.user));
+                    Toastify({
+                        text: "Login berhasil! Mengarahkan...",
+                        duration: 1500, gravity: "bottom", position: "right",
+                        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                    }).showToast();
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+                } else {
+                    errorMessage.textContent = data.message;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                errorMessage.textContent = 'Terjadi masalah koneksi.';
+            })
+            .finally(() => {
+                loginButton.disabled = false;
+                loginButton.textContent = 'MASUK';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -7,22 +7,18 @@
     <style>
         body { font-family: sans-serif; padding: 2rem; }
         button { padding: 10px 20px; font-size: 1rem; cursor: pointer; }
-        #result { margin-top: 20px; padding: 15px; background-color: #f0f0f0; border-radius: 5px; white-space: pre-wrap; }
+        #result { margin-top: 20px; padding: 15px; background-color: #f0f0f0; border-radius: 5px; white-space: pre-wrap; word-break: break-all; }
     </style>
 </head>
 <body>
-
     <h1>Uji Koneksi ke Google Apps Script</h1>
-    <p>Klik tombol di bawah untuk mengirim permintaan ke backend.</p>
-
     <button id="testButton">Kirim Tes ke GAS</button>
-
     <h3>Hasil dari Server:</h3>
     <div id="result">Menunggu respons...</div>
 
     <script>
-        // --- PENTING: GANTI DENGAN URL WEB APP ANDA ---
-        const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxa1kM3Kmf5q2jEFjZbNGEouPo59dQ5TK29AcIRgkwl3cOsQmujRUBJHAfl69LIzCkK/exec'; 
+        // !!! GANTI DENGAN URL WEB APP ANDA YANG PALING BARU !!!
+        const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzj6Iq9zpbmUW5LpD90wezmfHTD5wJnyzNB01XSdjMa9wJvHPhAeEQhwY3HoGOC86br/exec'; 
 
         const testButton = document.getElementById('testButton');
         const resultDiv = document.getElementById('result');
@@ -34,23 +30,15 @@
             try {
                 const response = await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    // Kirim data dummy untuk melihat apakah sampai ke server
-                    body: new URLSearchParams({
-                        action: 'test_connection',
-                        user: 'GitHub Pages'
-                    })
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ action: 'test' })
                 });
 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
                 const result = await response.json();
-                
-                // Tampilkan hasil yang diterima dari server
                 resultDiv.textContent = JSON.stringify(result, null, 2);
 
             } catch (error) {

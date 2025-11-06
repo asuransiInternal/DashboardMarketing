@@ -1,24 +1,28 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uji Koneksi GAS</title>
+    <title>Uji Coba Final CORS</title>
     <style>
         body { font-family: sans-serif; padding: 2rem; }
         button { padding: 10px 20px; font-size: 1rem; cursor: pointer; }
-        #result { margin-top: 20px; padding: 15px; background-color: #f0f0f0; border-radius: 5px; white-space: pre-wrap; word-break: break-all; }
+        #result { margin-top: 20px; padding: 15px; background-color: #f0f0f0; border-radius: 5px; white-space: pre-wrap; }
     </style>
 </head>
 <body>
-    <h1>Uji Koneksi ke Google Apps Script</h1>
-    <button id="testButton">Kirim Tes ke GAS</button>
+
+    <h1>Uji Coba Final: GitHub ke GAS</h1>
+    <p>Klik tombol untuk mengirim permintaan POST ke Google Apps Script.</p>
+
+    <button id="testButton">KIRIM PERMINTAAN POST</button>
+
     <h3>Hasil dari Server:</h3>
-    <div id="result">Menunggu respons...</div>
+    <div id="result">Menunggu...</div>
 
     <script>
-        // !!! GANTI DENGAN URL WEB APP ANDA YANG PALING BARU !!!
-        const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxOa1KfgLro2eSlYP417ZwARuEBkRwF5gTKp17GTTh39g67QarBEBxNK_sOcnj__vao/exec'; 
+        // !!! GANTI DENGAN URL WEB APP ANDA !!!
+        const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxOa1KfgLro2eSlYP417ZwARuEBkRwF5gTKp17GTTh39g67QarBEBxNK_sOcnj__vao/exec';
 
         const testButton = document.getElementById('testButton');
         const resultDiv = document.getElementById('result');
@@ -30,8 +34,13 @@
             try {
                 const response = await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams({ action: 'test' })
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        action: 'final_test',
+                        message: 'Hello from GitHub!'
+                    })
                 });
 
                 if (!response.ok) {
@@ -39,11 +48,11 @@
                 }
 
                 const result = await response.json();
-                resultDiv.textContent = JSON.stringify(result, null, 2);
+                resultDiv.textContent = 'SUKSES!\n\n' + JSON.stringify(result, null, 2);
 
             } catch (error) {
-                console.error('Error:', error);
-                resultDiv.textContent = 'Gagal menghubungi server.\nError: ' + error.message;
+                console.error('Fetch Error:', error);
+                resultDiv.textContent = 'GAGAL!\n\nError: ' + error.message;
             } finally {
                 testButton.disabled = false;
             }

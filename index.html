@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My GAS-Powered App</title>
+    <title>Dashboard Marketing - User List</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Data from Google Sheet</h1>
-    <ul id="data-list"></ul>
+    <div class="container">
+        <h1>User List from Google Sheet</h1>
+        <div id="loading" class="loading-spinner"></div>
+        <ul id="user-list" class="user-list">
+            <!-- Data user akan dimuat di sini oleh JavaScript -->
+        </ul>
+        <p id="error-message" class="error-message" style="display: none;">
+            Failed to load data. Please try again later.
+        </p>
+    </div>
 
-    <h2>Add New Data</h2>
-    <form id="data-form">
-        <input type="text" id="kolom1-input" placeholder="Kolom 1" required>
-        <input type="text" id="kolom2-input" placeholder="Kolom 2" required>
-        <button type="submit">Add Data</button>
-    </form>
-
-    <script src="script.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

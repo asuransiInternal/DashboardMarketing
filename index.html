@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uji Koneksi GAS</title>
+    <style>
+        body { font-family: sans-serif; padding: 2rem; }
+        button { padding: 10px 20px; font-size: 1rem; cursor: pointer; }
+        #result { margin-top: 20px; padding: 15px; background-color: #f0f0f0; border-radius: 5px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+
+    <h1>Uji Koneksi ke Google Apps Script</h1>
+    <p>Klik tombol di bawah untuk mengirim permintaan ke backend.</p>
+
+    <button id="testButton">Kirim Tes ke GAS</button>
+
+    <h3>Hasil dari Server:</h3>
+    <div id="result">Menunggu respons...</div>
+
+    <script>
+        // --- PENTING: GANTI DENGAN URL WEB APP ANDA ---
+        const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzj6Iq9zpbmUW5LpD90wezmfHTD5wJnyzNB01XSdjMa9wJvHPhAeEQhwY3HoGOC86br/exec'; 
+
+        const testButton = document.getElementById('testButton');
+        const resultDiv = document.getElementById('result');
+
+        testButton.addEventListener('click', async () => {
+            resultDiv.textContent = 'Mengirim permintaan...';
+            testButton.disabled = true;
+
+            try {
+                const response = await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    // Kirim data dummy untuk melihat apakah sampai ke server
+                    body: new URLSearchParams({
+                        action: 'test_connection',
+                        user: 'GitHub Pages'
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                
+                // Tampilkan hasil yang diterima dari server
+                resultDiv.textContent = JSON.stringify(result, null, 2);
+
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.textContent = 'Gagal menghubungi server.\nError: ' + error.message;
+            } finally {
+                testButton.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

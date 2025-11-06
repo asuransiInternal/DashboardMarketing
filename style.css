@@ -1,78 +1,254 @@
+/* style.css */
+
+/* --- General Body & Typography --- */
 body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: #f9f9f9;
-  color: #333;
+    margin: 0;
+    font-family: 'Poppins', sans-serif; /* Pastikan font Poppins sudah di-import atau gunakan font default */
+    background: #f9f9f9;
+    color: #333;
 }
 
-.container {
-  display: flex;
-  height: 100vh;
+/* --- Main Layout Container --- */
+.login-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden; /* Mencegah scroll */
 }
 
-.left-side {
-  flex: 1;
-  position: relative;
-  background: #000;
+/* --- Left Side (Image & Text) --- */
+.login-left {
+    flex: 1;
+    position: relative;
+    background: #000;
 }
 
-.bg-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.7;
+.login-left img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7;
 }
 
-.overlay-text {
-  position: absolute;
-  bottom: 10%;
-  left: 5%;
-  color: #fff;
-  max-width: 80%;
+.text-content {
+    position: absolute;
+    bottom: 10%;
+    left: 5%;
+    color: #fff;
+    max-width: 80%;
 }
 
-.right-side {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 3rem;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+.text-content .dashboard-text {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #ccc;
 }
 
-input {
-  padding: 10px;
-  margin-bottom: 15px;
-  width: 100%;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+.text-content h1 {
+    font-size: 2.5rem;
+    margin: 0.5rem 0;
 }
 
-button {
-  background: #0f62fe;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.text-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
 }
 
-button:hover {
-  background: #0353e9;
+/* --- Right Side (Form) --- */
+.login-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3rem;
+    background: #fff;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
 }
 
-.hidden { display: none; }
-
-.password-wrapper {
-  position: relative;
+.login-right h2 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: #333;
 }
 
-.toggle-password {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
+.login-right > p {
+    margin-bottom: 2rem;
+    color: #666;
+}
+
+/* --- Form Elements --- */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #555;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box; /* Penting agar padding tidak menambah lebar */
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #0f62fe;
+    box-shadow: 0 0 5px rgba(15, 98, 254, 0.3);
+}
+
+/* --- Buttons --- */
+.btn {
+    display: inline-block;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.btn-primary {
+    background: #0f62fe;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #0353e9;
+    transform: translateY(-2px);
+}
+
+.btn-google {
+    background: #fff;
+    color: #444;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-google:hover {
+    background: #f5f5f5;
+}
+
+/* --- Links & Other Text --- */
+.forgot-password {
+    display: block;
+    text-align: right;
+    margin-top: -10px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: #0f62fe;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.divider {
+    text-align: center;
+    margin: 1.5rem 0;
+    position: relative;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #eee;
+}
+
+.divider span {
+    background: #fff;
+    padding: 0 15px;
+    position: relative;
+    color: #999;
+}
+
+.signup-link, .login-link {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.signup-link a, .login-link a {
+    color: #0f62fe;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.signup-link a:hover, .login-link a:hover {
+    text-decoration: underline;
+}
+
+.disclaimer {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+/* --- Error & Feedback Messages --- */
+.error-message {
+    color: #d93025; /* Merah untuk error */
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    display: none; /* Sembunyikan secara default */
+    font-size: 0.9rem;
+}
+
+/* --- Toast Notifications --- */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.toast {
+    background: #333;
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    min-width: 250px;
+}
+
+.toast-success {
+    background: #28a745;
+}
+
+.toast-error {
+    background: #dc3545;
+}
+
+.toast-info {
+    background: #17a2b8;
+}
+
+/* --- Utility Classes --- */
+.hidden {
+    display: none;
 }

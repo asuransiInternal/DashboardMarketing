@@ -3,7 +3,7 @@
 /* --- General Body & Typography --- */
 body {
     margin: 0;
-    font-family: 'Poppins', sans-serif; /* Pastikan font Poppins sudah di-import atau gunakan font default */
+    font-family: 'Poppins', sans-serif;
     background: #f9f9f9;
     color: #333;
 }
@@ -12,7 +12,7 @@ body {
 .login-container {
     display: flex;
     height: 100vh;
-    overflow: hidden; /* Mencegah scroll */
+    overflow: hidden;
 }
 
 /* --- Left Side (Image & Text) --- */
@@ -93,7 +93,7 @@ body {
     padding: 12px 15px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    box-sizing: border-box; /* Penting agar padding tidak menambah lebar */
+    box-sizing: border-box;
     font-size: 1rem;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
@@ -206,13 +206,13 @@ body {
 
 /* --- Error & Feedback Messages --- */
 .error-message {
-    color: #d93025; /* Merah untuk error */
+    color: #d93025;
     background-color: #f8d7da;
     border: 1px solid #f5c6cb;
     padding: 10px;
     border-radius: 5px;
     margin-top: 10px;
-    display: none; /* Sembunyikan secara default */
+    display: none;
     font-size: 0.9rem;
 }
 
@@ -251,4 +251,36 @@ body {
 /* --- Utility Classes --- */
 .hidden {
     display: none;
+}
+
+
+/* ========================================================= */
+/* --- RESPONSIVE DESIGN FOR SMALLER SCREENS (TABLET/MOBILE) --- */
+/* ========================================================= */
+@media (max-width: 768px) {
+    /* Ubah layout dari horizontal menjadi vertikal */
+    .login-container {
+        flex-direction: column;
+        height: auto; /* Biarkan tinggi menyesuaikan konten */
+    }
+
+    /* Atur ulang bagian gambar */
+    .login-left {
+        height: 40vh; /* Gambar menempati 40% tinggi layar */
+        min-height: 250px; /* Tinggi minimum */
+    }
+
+    /* Atur ulang bagian form */
+    .login-right {
+        padding: 2rem; /* Kurangi padding agar lebih ringkas */
+    }
+
+    /* Perkecil ukuran teks agar muat */
+    .text-content h1 {
+        font-size: 2rem;
+    }
+
+    .text-content p {
+        font-size: 1rem;
+    }
 }
